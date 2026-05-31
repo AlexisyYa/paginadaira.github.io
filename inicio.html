@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mi Página de Cultura General</title>
+  <style>
+    :root{
+      --bg:#f7f7f7; --card:#fff; --accent:#111; --muted:#666;
+      --maxw:1200px; --gap:18px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:var(--bg);color:var(--accent);line-height:1.45}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:var(--maxw);margin:24px auto;padding:16px}
+    header.site-header{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#111;color:#fff;padding:18px;border-radius:8px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:52px;height:52px;background:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#111;font-weight:800}
+    .site-title{font-size:1.15rem;font-weight:700}
+    nav.main-nav{display:flex;gap:10px}
+    nav.main-nav a{padding:8px 12px;border-radius:6px;color:#fff;opacity:.95}
+    .top-actions{display:flex;gap:8px}
+    .btn{background:#fff;color:#111;padding:8px 12px;border-radius:6px;font-weight:600}
+    .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,.12);color:#fff}
+    .grid{display:grid;grid-template-columns:1fr 320px;gap:var(--gap);margin-top:18px}
+    @media (max-width:980px){.grid{grid-template-columns:1fr}}
+    .main{display:flex;flex-direction:column;gap:var(--gap)}
+    .sidebar{display:flex;flex-direction:column;gap:12px}
+    .card{background:var(--card);padding:14px;border-radius:8px;box-shadow:0 1px 6px rgba(0,0,0,.06)}
+    .card h3{margin:0 0 10px 0;font-size:1.05rem}
+    .meta{font-size:.85rem;color:var(--muted)}
+    .list-item{display:flex;gap:12px;align-items:flex-start}
+    .thumb{width:120px;height:80px;background:#ddd;border-radius:6px;flex-shrink:0;object-fit:cover}
+    .excerpt{flex:1}
+    /* Media grid */
+    .media-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    @media (max-width:900px){.media-grid{grid-template-columns:repeat(3,1fr)}}
+    @media (max-width:600px){.media-grid{grid-template-columns:repeat(2,1fr)}}
+    .media-grid img{width:100%;height:100px;object-fit:cover;border-radius:6px;background:#eee}
+    .player{height:240px;background:#000;color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700}
+    .ad{height:250px;background:#fafafa;border:1px dashed #ddd;border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+    .note{background:#222;color:#fff;padding:10px;border-radius:6px;text-align:center;font-weight:600}
+    .pagination{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .page{padding:6px 10px;background:#fff;border-radius:6px;border:1px solid #eee}
+    /* Galería 4x4 de personas ilustres */
+    .gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    @media (max-width:1100px){.gallery{grid-template-columns:repeat(3,1fr)}}
+    @media (max-width:700px){.gallery{grid-template-columns:repeat(2,1fr)}}
+    .profile-card{background:#fff;border-radius:8px;padding:10px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+    .profile-card img{width:100%;height:160px;object-fit:cover;border-radius:6px;background:#eee}
+    .profile-name{margin-top:8px;font-weight:700}
+    /* Frases destacadas (espacio extra) */
+    .quotes{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media (max-width:700px){.quotes{grid-template-columns:1fr}}
+    .quote-box{padding:14px;border-radius:8px;background:linear-gradient(180deg,#fff,#fafafa);font-style:italic}
+    /* Recursos */
+    .resources{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    @media (max-width:700px){.resources{grid-template-columns:1fr}}
+    footer{margin-top:18px;text-align:center;color:var(--muted);font-size:.9rem}
+    /* Libros y documentales */
+.content-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+
+@media (max-width:900px){
+  .content-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media (max-width:600px){
+  .content-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+.content-card{
+  background:#fff;
+  border-radius:8px;
+  padding:10px;
+  box-shadow:0 1px 4px rgba(0,0,0,.05);
+}
+
+.content-card img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  border-radius:6px;
+  background:#eee;
+}
+
+.content-card h4{
+  margin:10px 0 6px;
+  font-size:1rem;
+}
+
+.content-card p{
+  margin:0;
+  font-size:.9rem;
+  color:var(--muted);
+}
+.search-highlight{
+  outline:4px solid gold;
+  transform:scale(1.03);
+  transition:.3s;
+}
+.search-results{
+  margin-top:10px;
+  border-top:1px solid #eee;
+  padding-top:8px;
+}
+
+.search-item{
+  padding:8px;
+  border-radius:6px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.search-item:hover{
+  background:#f2f2f2;
+}
+
+.search-empty{
+  color:#666;
+  font-size:.9rem;
+}
+.search-results:empty{
+  display:none;
+}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- Header -->
+    <header class="site-header">
+      <div class="brand">
+        <div class="logo">MG</div>
+        <div>
+          <div class="site-title">Cultura General</div>
+          <div class="meta">Frases, biografías y archivo multimedia</div>
+        </div>
+      </div>
+
+      <nav class="main-nav" aria-label="Navegación principal">
+        <a href="#">Home</a>
+      </nav>
+<div style="position:relative; width:280px;">
+  <input
+    id="searchInput"
+    type="search"
+    placeholder="Buscar..."
+    style="width:100%;padding:8px;border-radius:6px;border:none;"
+  >
+
+  <div
+    id="searchResults"
+    class="search-results"
+    style="
+      position:absolute;
+      top:45px;
+      left:0;
+      right:0;
+      background:white;
+      color:black;
+      border-radius:8px;
+      box-shadow:0 4px 12px rgba(0,0,0,.15);
+      z-index:1000;
+    ">
+  </div>
+</div>
+      <div class="top-actions">
+        <button class="btn">Hecho por:</button>
+        <button class="btn secondary">Daira Ximena</button>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- Columna principal -->
+      <main class="main">
+        <!-- Frases destacadas -->
+        <section class="card" id="frases">
+          <h3>Frases destacadas</h3>
+          <div class="quotes">
+            <div class="quote-box">«Aprende a caminar por el infierno sin quemarte» — <strong>Alesis</strong></div>
+            <div class="quote-box">«Pienso, luego existo» — <strong>Descartes</strong></div>
+          </div>
+        </section>
+
+        <!-- Blog -->
+        <section class="card" id="blog">
+          <h3>Blog</h3>
+          <article class="list-item">
+            <img class="thumb" src="socrates.jpg" alt="Miniatura entrada">
+            <div class="excerpt">
+              <strong>"PURO PENDEJO ESCRIBE" </strong>
+              <div class="meta">Frase atribuida a Sócrates · Filosofía</div>
+              <p>Neta asi dijo, chingo mi madre si no  </p>
+            </div>
+          </article>
+        </section>
+
+        <!-- Galería de personas ilustres 4x4 -->
+        <section class="card" id="galeria-ilustres">
+          <h3>Galería de personas ilustres</h3>
+          <p class="meta">Una simple galeria.</p>
+          <div class="gallery" id="galleryGrid">
+            <!-- 16 tarjetas (4x4). Reemplaza src y nombre -->
+            <div class="profile-card">
+              <img src="socrates.jpg" alt="Socrates">
+              <div class="profile-name">Sócrates</div>
+            </div>
+            <div class="profile-card">
+              <img src="Platon.jpg" alt="Persona 2">
+              <div class="profile-name">Platón</div>
+            </div>
+            <div class="profile-card">
+              <img src="aristoteles.jpg" alt="Persona 3">
+              <div class="profile-name">Aristóteles</div>
+            </div>
+            <div class="profile-card">
+              <img src="confucio.png" alt="Persona 4">
+              <div class="profile-name">Confucio</div>
+            </div>
+            <div class="profile-card">
+              <img src="Galileo.jpg" alt="Persona 5">
+              <div class="profile-name">Galileo</div>
+            </div>
+            <div class="profile-card">
+              <img src="Descartes.jpg" alt="Persona 6">
+              <div class="profile-name">Descartes</div>
+            </div>
+            <div class="profile-card">
+              <img src="Simone.png" alt="Persona 7">
+              <div class="profile-name">Simone de Beauvoir</div>
+            </div>
+            <div class="profile-card">
+              <img src="nietzche.jpg" alt="Persona 8">
+              <div class="profile-name">Nietzsche</div>
+            </div>
+            <div class="profile-card">
+              <img src="Fridakhalo.jpg" alt="Persona 9">
+              <div class="profile-name">Frida Kahlo</div>
+            </div>
+            <div class="profile-card">
+              <img src="Lovelace.jpg" alt="Persona 10">
+              <div class="profile-name">Ada Lovelace</div>
+            </div>
+            <div class="profile-card">
+              <img src="AlanTurig.jpg" alt="Persona 11">
+              <div class="profile-name">Alan Turing</div>
+            </div>
+            <div class="profile-card">
+              <img src="Arendt.jpg" alt="Persona 12">
+              <div class="profile-name">Hannah Arendt</div>
+            </div>
+            <div class="profile-card">
+              <img src="Russeau.jpg" alt="Persona 13">
+              <div class="profile-name">Rousseau</div>
+            </div>
+            <div class="profile-card">
+              <img src="mary wallstone.jpg" alt="Persona 14">
+              <div class="profile-name">Mary Wollstonecraft</div>
+            </div>
+            <div class="profile-card">
+              <img src="Martin Luther.jpg" alt="Persona 15">
+              <div class="profile-name">Martin Luther King</div>
+            </div>
+            <div class="profile-card">
+              <img src="Jean Paul Sartre.jpg" alt="Persona 16">
+              <div class="profile-name">Jean-Paul Sartre</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Archivo multimedia -->
+        <section class="card" id="media-archive">
+          <h3>Archivo Multimedia</h3>
+          <div class="media-grid" id="mediaGrid">
+             <a href="https://www.youtube.com/watch?v=7Zy0Avz6Qtw">
+            <img src="podcast migala.jpg" alt="Media 1">
+              </a> 
+          <a href="https://www.youtube.com/watch?v=Q0rsdXZTBx0">
+            <img src="como vivir a solas con.jpg" alt="Media 2">
+              </a> 
+           
+              <a href="https://www.youtube.com/watch?v=-x78zgbfr9w">
+            <img src="tu y yo.jpg" alt="Media 3">
+              </a> 
+
+              <a href="https://www.youtube.com/watch?v=vLHQYU6vmVQ">
+            <img src="ateo en el.jpg" alt="Media 4">
+              </a> 
+
+              <a href="https://www.youtube.com/watch?v=zM57dzuz_ow">
+            <img src="tutorial de como.jpg" alt="Media 5">
+              </a> 
+
+              <a href="https://www.youtube.com/watch?v=pleOHU5MMTU">
+            <img src="algun dia recordaran.jpg" alt="Media 6">
+              </a> 
+
+              <a href="https://www.youtube.com/watch?v=2PFqmlohtps">
+            <img src="de que trata.jpg" alt="Media 7">
+              </a> 
+
+              <a href="https://www.youtube.com/watch?v=7nxafLVRA1g">
+            <img src="quien eres tu.jpg" alt="Media 8">
+              </a> 
+          </div>
+
+          <div style="margin-top:12px" class="player" id="player">
+            Por problemas ajenos no se puede previsualizar material audiovisual
+          </div>
+        </section>
+
+        <div class="note">RECURSOS EXTRA</div>
+
+        <!-- Paginación reducida a 1-2 
+        <div style="margin-top:12px" class="card">
+          <div class="pagination" aria-label="Paginación">
+            <span class="page">1</span>
+            <span class="page">2</span>
+          </div>
+        </div>
+-->
+       <!-- Recursos extra -->
+<section class="card" id="recursos">
+
+  <h4>Libros recomendados</h4>
+  <div class="content-grid">
+
+    <div class="content-card">
+      <img src="Lobo estepario.jpg" alt="Libro 1">
+      <h4>Lobo Estepario</h4>
+      <p>Un hombre dividido entre su lado humano y su lado salvaje busca sentido en un mundo que no entiende.</p>
+    </div>
+
+    <div class="content-card">
+      <img src="El resplandor.jpg" alt="Libro 2">
+      <h4>El resplandor</h4>
+      <p>Una familia queda aislada en un hotel donde fuerzas sobrenaturales empujan al padre hacia la locura.</p>
+    </div>
+
+    <div class="content-card">
+      <img src="sin novedad en el frente.jpg" alt="Libro 3">
+      <h4>Sin novedad en el frente</h4>
+      <p> Un joven soldado vive la brutalidad de la Primera Guerra Mundial y la pérdida total de la inocencia.</p>
+    </div>
+
+    <div class="content-card">
+      <img src="1984.jpg" alt="Libro 4">
+      <h4>1984</h4>
+      <p>Una distopía donde el gobierno controla todo, incluso lo que la gente piensa.</p>
+    </div>
+
+    <div class="content-card">
+      <img src="fahrenheit-451.jpg" alt="Libro 5">
+      <h4>Fahrenheit 451</h4>
+      <p>En un futuro sin libros, un bombero empieza a cuestionar por qué debe quemarlos.</p>
+    </div>
+
+    <div class="content-card">
+      <img src="el viejo y el mar.jpg" alt="Libro 6">
+      <h4>El viejo y el mar</h4>
+      <p>Un pescador lucha contra un enorme pez en una batalla que se vuelve física y espiritual.</p>
+    </div>
+
+  </div>
+
+  <br>
+
+  <h4>Pinturas</h4>
+  <div class="content-grid">
+
+    <div class="content-card">
+      <img src="El beso-M-iPRgenw" alt="Documental 1">
+      <h4>Gustav Klimt - El beso</h4>
+      <p>Una pareja envuelta en oro se funde en un abrazo que mezcla pasión y ternura.</p>
+    </div>
+
+    <div class="content-card">
+      <img src="Dama lago" alt="Documental 2">
+      <h4>Mujer en el lago — John William Waterhouse</h4>
+      <p>Una figura femenina mira su reflejo en el agua, simbolizando un amor profundo y contemplativo.</p>
+    </div>
+
+    <div class="content-card">
+      <img src="romeo y julieta" alt="Documental 3">
+      <h4>Romeo y Julieta — Frank Dicksee</h4>
+      <p>Los amantes se despiden en un balcón iluminado, capturando el instante más intenso de su amor prohibido.</p>
+    </div>
+
+    <div class="content-card">
+      <img src="joven de perla" alt="Documental 4">
+      <h4>La joven de la perla — Johannes Vermeer</h4>
+      <p>Una mirada suave y luminosa que sugiere un amor silencioso y no dicho.</p>
+    </div>
+
+    <div class="content-card">
+      <img src="dama armiño" alt="Documental 5">
+      <h4>La dama del armiño — Leonardo da Vinci</h4>
+      <p>Una joven sostiene un armiño con delicadeza, reflejando un amor puro y contenido.</p>
+    </div>
+
+    <div class="content-card">
+      <img src="ophelia" alt="Documental 6">
+      <h4>Ophelia — John Everett Millais</h4>
+      <p>Una escena poética donde el amor trágico se mezcla con la belleza natural del agua y las flores.</p>
+    </div>
+
+  </div>
+</section>
+        <div class="card">
+          <h3>Anuncio</h3>
+          <div class="ad">chichiquila conquistara puebla</div>
+        </div>
+
+    <footer>
+      © <span id="year"></span> Cultura General · Chichiquilaa conquistara puebla
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Reemplazar video destacado
+    function setFeaturedVideo(url){
+      const player = document.getElementById('player');
+      player.innerHTML = '<iframe src="'+url+'" style="width:100%;height:100%;border:0;border-radius:8px" allowfullscreen></iframe>';
+    }
+
+    // Reemplazar miniatura del archivo multimedia
+    function replaceMedia(index, src, alt){
+      const imgs = document.querySelectorAll('#mediaGrid img');
+      if(imgs[index]){ imgs[index].src = src; imgs[index].alt = alt || ''; }
+    }
+
+    // Reemplazar perfil en la galería (index 0..15)
+    function replaceProfile(index, src, name, alt){
+      const cards = document.querySelectorAll('#galleryGrid .profile-card');
+      if(cards[index]){
+        const img = cards[index].querySelector('img');
+        const nm = cards[index].querySelector('.profile-name');
+        img.src = src; img.alt = alt || name;
+        nm.textContent = name;
+      }
+    }
+    // Base de datos de búsqueda
+const searchableItems = [];
+
+document.querySelectorAll(".profile-card").forEach(card => {
+  searchableItems.push({
+    name: card.querySelector(".profile-name").textContent,
+    element: card
+  });
+});
+
+// Normalizar texto
+function normalize(text){
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+// Distancia de Levenshtein
+function levenshtein(a,b){
+  const matrix = [];
+
+  for(let i=0;i<=b.length;i++){
+    matrix[i]=[i];
+  }
+
+  for(let j=0;j<=a.length;j++){
+    matrix[0][j]=j;
+  }
+
+  for(let i=1;i<=b.length;i++){
+    for(let j=1;j<=a.length;j++){
+      if(b.charAt(i-1)===a.charAt(j-1)){
+        matrix[i][j]=matrix[i-1][j-1];
+      }else{
+        matrix[i][j]=Math.min(
+          matrix[i-1][j-1]+1,
+          matrix[i][j-1]+1,
+          matrix[i-1][j]+1
+        );
+      }
+    }
+  }
+
+  return matrix[b.length][a.length];
+}
+
+const searchInput = document.getElementById("searchInput");
+const resultsBox = document.getElementById("searchResults");
+
+searchInput.addEventListener("input", () => {
+
+  const query = normalize(searchInput.value.trim());
+
+  resultsBox.innerHTML = "";
+
+  if(query.length < 2){
+    return;
+  }
+
+  const results = [];
+
+  searchableItems.forEach(item => {
+
+    const name = normalize(item.name);
+
+    let score;
+
+    if(name.includes(query)){
+      score = 0;
+    }else{
+      score = levenshtein(query, name.substring(0, query.length));
+    }
+
+    results.push({
+      ...item,
+      score
+    });
+  });
+
+  results.sort((a,b)=>a.score-b.score);
+
+  const bestResults = results.slice(0,5);
+
+  bestResults.forEach(result => {
+
+    const div = document.createElement("div");
+
+    div.className = "search-item";
+    div.textContent = result.name;
+
+    div.addEventListener("click",()=>{
+
+      document
+        .querySelectorAll(".search-highlight")
+        .forEach(el => el.classList.remove("search-highlight"));
+
+      result.element.classList.add("search-highlight");
+
+      result.element.scrollIntoView({
+        behavior:"smooth",
+        block:"center"
+      });
+    });
+
+    resultsBox.appendChild(div);
+  });
+
+  if(bestResults.length === 0){
+    resultsBox.innerHTML =
+      '<div class="search-empty">Sin resultados</div>';
+  }
+});
+
+  </script>
+</body>
+</html>
